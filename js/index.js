@@ -27,4 +27,4 @@ function apuestaVisible() {
     }
 }
 
-openModal()
+apuestaVisible()

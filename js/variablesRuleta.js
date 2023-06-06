@@ -2,6 +2,7 @@ const autor = 'Julio';
 const version = '1.4';
 const numeroMaximo = 36;
 const numeroMinimo = 0;
+const defaultData = "";
 /*JulioAlarcon*/
 let fichasDisponibles = 5000;
 let apuesta = {};
