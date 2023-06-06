@@ -213,10 +213,12 @@ function apostarPorColor(color) {
         if (color === "1" || color === "2") {
             let colorKey = color === "1" ? "Rojo" : "Negro";
             let cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el color " + colorKey + ":\nFichas disponibles: " + fichasDisponibles + ":"));
-            if (isNaN(cantidad) || cantidad < apuestaMinima || cantidad > fichasDisponibles) {
+            if (isNaN(cantidad)) {
+                console.log("Ha decidido volver al menú.");
+                return;
+            } else if (cantidad < apuestaMinima || cantidad > fichasDisponibles) {
                 console.log("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
                 alert("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
-                return;
             } else {
                 fichasDisponibles -= cantidad;
                 if (colorKey in apuesta) {
@@ -291,10 +293,7 @@ function apostarPorNumero(numero) {
         if (flag === 0) {
             numero = parseInt(prompt("Ingrese el número por el que desea apostar:\nNúmero válido entre 0 y 36\nX: para volver al menú"));
         }
-        if (isNaN(cantidad)) {
-            console.log("Ha decidido volver al menú.");
-            return;
-        } else if (numero === "x" || numero < numeroMinimo || numero > numeroMaximo) {
+        if (numero === "x" || numero < numeroMinimo || numero > numeroMaximo) {
             console.log("Número inválido. Debe ingresar un número válido entre 0 y 36.");
             alert("Número inválido. Debe ingresar un número válido entre 0 y 36.");
             return;
