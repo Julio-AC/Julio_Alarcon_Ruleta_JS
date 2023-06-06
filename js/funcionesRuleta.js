@@ -86,6 +86,7 @@ function girarRuleta() {
     const bottomRuleta = datoGanador.bottomRuleta;
     const leftRuleta = datoGanador.leftRuleta;
     let mensaje = "El número ganador es " + datoGanador.numero + " de color " + datoGanador.color + "\n";
+    let sumaFichas = 0;
     let ganancias = 0;
     let perdidas = 0;
     objApuesta.agregarNumeroGanador(numeroElegido);
@@ -101,7 +102,7 @@ function girarRuleta() {
             objApuesta.establecerParImpar(apuestaItem, apuesta[apuestaItem]);
         } else if (apuestaItem === "1 a 18" || apuestaItem === "19 a 36") {
             objApuesta.establecerMitad(apuestaItem, apuesta[apuestaItem]);
-        } else if (apuestaItem === "primer12" || apuestaItem === "segundo12" || apuestaItem === "tercer12") {
+        } else if (apuestaItem === "primer 12" || apuestaItem === "segundo 12" || apuestaItem === "tercer 12") {
             objApuesta.establecerDocena(apuestaItem, apuesta[apuestaItem]);
         } else if (apuestaItem === "dosAUno1" || apuestaItem === "dosAUno2" || apuestaItem === "dosAUno3") {
             objApuesta.establecerDosAUno(apuestaItem, apuesta[apuestaItem]);
@@ -123,18 +124,21 @@ function girarRuleta() {
         }
 
         if (isGanador) {
-            ganancias += apuesta[apuestaItem] * multiplicador;
-            mensaje += "\nHa ganado " + apuesta[apuestaItem] * multiplicador + " fichas por apostar a " + obtenerMensajeApostado(apuestaItem);
+            sumaFichas += apuesta[apuestaItem] * multiplicador;
+            ganancias += apuesta[apuestaItem] * multiplicador - apuesta[apuestaItem];
+            let mensajeGanar = apuesta[apuestaItem] * multiplicador - apuesta[apuestaItem]
+            mensaje += "\nHa ganado " + mensajeGanar + " fichas por apostar a " + obtenerMensajeApostado(apuestaItem);
         } else {
             perdidas += apuesta[apuestaItem];
             mensaje += "\nHa perdido " + apuesta[apuestaItem] + " fichas por apostar a " + obtenerMensajeApostado(apuestaItem);
         }
         delete apuesta[apuestaItem];
     }
+    objApuesta.agregarApuestaGanancia(sumaFichas);
     objApuesta.agregarApuestaGanancia(ganancias);
     objApuesta.agregarApuestaPerdida(perdidas);
     historialApuestas.push(objApuesta);
-    fichasDisponibles += ganancias;
+    fichasDisponibles += sumaFichas;
     moverFicha(bottomRuleta, leftRuleta);
     mensaje += "\n\nPerdidas Total: " + perdidas + "\nGanancias Total: " + ganancias + "\nFichas Totales: " + fichasDisponibles;
     console.log(mensaje);
@@ -155,11 +159,11 @@ function obtenerMensajeApostado(apuestaItem) {
         return "los números pares";
     } else if (apuestaItem === "impar") {
         return "los números impares";
-    } else if (apuestaItem === "primer12") {
+    } else if (apuestaItem === "primer 12") {
         return "el primer 12";
-    } else if (apuestaItem === "segundo12") {
+    } else if (apuestaItem === "segundo 12") {
         return "el segundo 12";
-    } else if (apuestaItem === "tercer12") {
+    } else if (apuestaItem === "tercer 12") {
         return "el tercer 12";
     } else if (apuestaItem === "dosAUno1") {
         return "el primer 2 a 1";
@@ -243,17 +247,22 @@ function apostarPorNumero(numero) {
         if (flag === 0) {
             numero = parseInt(prompt("Ingrese el número por el que desea apostar:\nNúmero válido entre 0 y 36\nX: para volver al menú"));
         }
-        if (numero === "x" || isNaN(numero) || numero < numeroMinimo || numero > numeroMaximo) {
+        if (isNaN(cantidad)) {
+            console.log("Ha decidido volver al menú.");
+            return;
+        } else if (numero === "x" || numero < numeroMinimo || numero > numeroMaximo) {
             console.log("Número inválido. Debe ingresar un número válido entre 0 y 36.");
             alert("Número inválido. Debe ingresar un número válido entre 0 y 36.");
             return;
         } else {
             console.log("Apostando por el número: " + numero);
             cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el número:\nFichas disponibles: " + fichasDisponibles));
-            if (isNaN(cantidad) || cantidad < apuestaMinima || cantidad > fichasDisponibles) {
+            if (isNaN(cantidad)) {
+                console.log("Ha decidido volver al menú.");
+                return;
+            } else if (cantidad < apuestaMinima || cantidad > fichasDisponibles) {
                 console.log("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
                 alert("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
-                return;
             } else {
                 fichasDisponibles -= cantidad;
                 if (numero in apuesta) {
@@ -280,10 +289,13 @@ function apostarPorDoces(doce) {
             doce = prompt("Ingrese el doce por el que desea apostar:\n\n1: Primeros 12\n2: Segundos 12\n3: Terceros 12\n0: para volver al menú");
         }
         if (doce === "1" || doce === "2" || doce === "3") {
-            let doceKey = (doce === "1" ? "primer12" : (doce === "2" ? "segundo12" : "tercer12"));
-            console.log("Apostando por el " + doceKey + " 12.");
+            let doceKey = (doce === "1" ? "primer 12" : (doce === "2" ? "segundo 12" : "tercer 12"));
+            console.log("Apostando por el " + doceKey + ".");
             cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el " + (doce === "1" ? "Primer" : (doce === "2" ? "Segundo" : "Tercer")) + " 12:\nFichas disponibles: " + fichasDisponibles));
-            if (isNaN(cantidad) || cantidad < apuestaMinima || cantidad > fichasDisponibles) {
+            if (isNaN(cantidad)) {
+                console.log("Ha decidido volver al menú.");
+                return;
+            } else if (cantidad < apuestaMinima || cantidad > fichasDisponibles) {
                 console.log("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
                 alert("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
             } else {
@@ -293,8 +305,8 @@ function apostarPorDoces(doce) {
                 } else {
                     apuesta[doceKey] = cantidad;
                 }
-                console.log("Ha apostado " + cantidad + " fichas por el " + doceKey + " 12.");
-                alert("Ha apostado " + cantidad + " fichas por el " + doceKey + " 12.");
+                console.log("Ha apostado " + cantidad + " fichas por el " + doceKey + ".");
+                alert("Ha apostado " + cantidad + " fichas por el " + doceKey + ".");
                 opcionValida = true;
             }
         } else if (doce === "0" || doce === "") {
@@ -322,7 +334,10 @@ function apostarMitad(mitad) {
             let mitadKey = (mitad === "1" ? "1 a 18" : "19 a 36");
             console.log("Apostando por la mitad " + mitadKey + ".");
             cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por la mitad " + mitadKey + ". Fichas disponibles: " + fichasDisponibles));
-            if (isNaN(cantidad) || cantidad < apuestaMinima || cantidad > fichasDisponibles) {
+            if (isNaN(cantidad)) {
+                console.log("Ha decidido volver al menú.");
+                return;
+            } else if (cantidad < apuestaMinima || cantidad > fichasDisponibles) {
                 console.log("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
                 alert("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
             } else {
@@ -361,7 +376,10 @@ function apostarPorDosAUno(dosAUno) {
             const dosAUnoKey = "dosAUno" + dosAUno;
             console.log("Apostando por el Dos a uno " + dosAUno + ".");
             cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el Dos a uno " + dosAUno + ":\nFichas disponibles: " + fichasDisponibles));
-            if (isNaN(cantidad) || cantidad < apuestaMinima || cantidad > fichasDisponibles) {
+            if (isNaN(cantidad)) {
+                console.log("Ha decidido volver al menú.");
+                return;
+            } else if (cantidad < apuestaMinima || cantidad > fichasDisponibles) {
                 console.log("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
                 alert("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
             } else {
