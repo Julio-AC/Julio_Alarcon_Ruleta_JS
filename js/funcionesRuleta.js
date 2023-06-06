@@ -41,7 +41,7 @@ class Apuesta {
 
 function mostrarMenu() {
     while (true) {
-        opcion = prompt("--- Menú de opciones ---\nFichas disponibles: " + fichasDisponibles + "\n\n1: Empezar\n2: Apostar por color\n3: Apostar por número\n4: Apostar por mitad\n5: Apostar por doces\n6: Apostar por Dos a Uno\n7: Ver apuestas realizadas\n0: Salir\nIngrese el número de la opción que desea:");
+        opcion = prompt("--- Menú de opciones ---\nFichas disponibles: " + fichasDisponibles + "\n\n1: Empezar\n2: Apostar por color\n3: Apostar por Par o Impar\n4: Apostar por número\n5: Apostar por mitad\n6: Apostar por doces\n7: Apostar por Dos a Uno\n8: Ver apuestas realizadas\n0: Salir\nIngrese el número de la opción que desea:");
         if (opcion === null) {
             console.log("El usuario ha cerrado el cuadro de diálogo.");
             return;
@@ -57,18 +57,21 @@ function mostrarMenu() {
                 apostarPorColor(defaultData);
                 break;
             case "3":
-                apostarPorNumero(defaultData);
+                apostarPorParImpar(defaultData);
                 break;
             case "4":
-                apostarMitad(defaultData);
+                apostarPorNumero(defaultData);
                 break;
             case "5":
-                apostarPorDoces(defaultData);
+                apostarMitad(defaultData);
                 break;
             case "6":
-                apostarPorDosAUno(defaultData);
+                apostarPorDoces(defaultData);
                 break;
             case "7":
+                apostarPorDosAUno(defaultData);
+                break;
+            case "8":
                 verApuestas();
                 break;
             default:
@@ -96,15 +99,15 @@ function girarRuleta() {
         let isGanador = false;
         let multiplicador = 0;
 
-        if (apuestaItem === "rojo" || apuestaItem === "negro") {
+        if (apuestaItem === "Rojo" || apuestaItem === "Negro") {
             objApuesta.agregarColor(apuestaItem, apuesta[apuestaItem]);
-        } else if (apuestaItem === "par" || apuestaItem === "impar") {
+        } else if (apuestaItem === "Par" || apuestaItem === "Impar") {
             objApuesta.establecerParImpar(apuestaItem, apuesta[apuestaItem]);
         } else if (apuestaItem === "1 a 18" || apuestaItem === "19 a 36") {
             objApuesta.establecerMitad(apuestaItem, apuesta[apuestaItem]);
-        } else if (apuestaItem === "primer 12" || apuestaItem === "segundo 12" || apuestaItem === "tercer 12") {
+        } else if (apuestaItem === "Primer 12" || apuestaItem === "Segundo 12" || apuestaItem === "Tercer 12") {
             objApuesta.establecerDocena(apuestaItem, apuesta[apuestaItem]);
-        } else if (apuestaItem === "dosAUno1" || apuestaItem === "dosAUno2" || apuestaItem === "dosAUno3") {
+        } else if (apuestaItem === "Primer 2 a 1" || apuestaItem === "Segundo 2 a 1" || apuestaItem === "Tercer 2 a 1") {
             objApuesta.establecerDosAUno(apuestaItem, apuesta[apuestaItem]);
         } else if (!isNaN(apuestaItem)) {
             objApuesta.agregarNumero(apuestaItem, apuesta[apuestaItem]);
@@ -126,7 +129,7 @@ function girarRuleta() {
         if (isGanador) {
             sumaFichas += apuesta[apuestaItem] * multiplicador;
             ganancias += apuesta[apuestaItem] * multiplicador - apuesta[apuestaItem];
-            let mensajeGanar = apuesta[apuestaItem] * multiplicador - apuesta[apuestaItem]
+            let mensajeGanar = apuesta[apuestaItem] * multiplicador - apuesta[apuestaItem];
             mensaje += "\nHa ganado " + mensajeGanar + " fichas por apostar a " + obtenerMensajeApostado(apuestaItem);
         } else {
             perdidas += apuesta[apuestaItem];
@@ -134,7 +137,6 @@ function girarRuleta() {
         }
         delete apuesta[apuestaItem];
     }
-    objApuesta.agregarApuestaGanancia(sumaFichas);
     objApuesta.agregarApuestaGanancia(ganancias);
     objApuesta.agregarApuestaPerdida(perdidas);
     historialApuestas.push(objApuesta);
@@ -151,26 +153,26 @@ function obtenerMensajeApostado(apuestaItem) {
         return "la mitad 1-18";
     } else if (apuestaItem === "19 a 36") {
         return "la mitad 19-36";
-    } else if (apuestaItem === "rojo") {
-        return "el color rojo";
-    } else if (apuestaItem === "negro") {
-        return "el color negro";
-    } else if (apuestaItem === "par") {
+    } else if (apuestaItem === "Rojo") {
+        return "el color Rojo";
+    } else if (apuestaItem === "Negro") {
+        return "el color Negro";
+    } else if (apuestaItem === "Par") {
         return "los números pares";
-    } else if (apuestaItem === "impar") {
+    } else if (apuestaItem === "Impar") {
         return "los números impares";
-    } else if (apuestaItem === "primer 12") {
-        return "el primer 12";
-    } else if (apuestaItem === "segundo 12") {
-        return "el segundo 12";
-    } else if (apuestaItem === "tercer 12") {
-        return "el tercer 12";
-    } else if (apuestaItem === "dosAUno1") {
-        return "el primer 2 a 1";
-    } else if (apuestaItem === "dosAUno2") {
-        return "el segundo 2 a 1";
-    } else if (apuestaItem === "dosAUno3") {
-        return "el tercer 2 a 1";
+    } else if (apuestaItem === "Primer 12") {
+        return "el Primer 12";
+    } else if (apuestaItem === "Segundo 12") {
+        return "el Segundo 12";
+    } else if (apuestaItem === "Tercer 12") {
+        return "el Tercer 12";
+    } else if (apuestaItem === "Primer 2 a 1") {
+        return "el Primer 2 a 1";
+    } else if (apuestaItem === "Segundo 2 a 1") {
+        return "el Segundo 2 a 1";
+    } else if (apuestaItem === "Tercer 2 a 1") {
+        return "el Tercer 2 a 1";
     } else if (!isNaN(apuestaItem)) {
         return "el número " + apuestaItem;
     }
@@ -206,10 +208,10 @@ function apostarPorColor(color) {
     }
     while (!opcionValida) {
         if (flag === 0) {
-            color = prompt("Ingrese el color por el que desea apostar:\n1: para rojo\n2: para negro\n0: para volver al menú");
+            color = prompt("Ingrese el color por el que desea apostar:\n1: para Rojo\n2: para Negro\n0: para volver al menú");
         }
         if (color === "1" || color === "2") {
-            let colorKey = color === "1" ? "rojo" : "negro";
+            let colorKey = color === "1" ? "Rojo" : "Negro";
             let cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el color " + colorKey + ":\nFichas disponibles: " + fichasDisponibles + ":"));
             if (isNaN(cantidad) || cantidad < apuestaMinima || cantidad > fichasDisponibles) {
                 console.log("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
@@ -233,6 +235,48 @@ function apostarPorColor(color) {
         } else {
             console.log("Opción inválida. Por favor, ingrese una opción válida.");
             alert("Opción inválida. Por favor, ingrese una opción válida.");
+        }
+    }
+}
+
+function apostarPorParImpar(parImpar){
+    let opcionValida = false;
+    let flag = 1;
+    if (parImpar === "") {
+        flag = 0;
+    }
+    while (!opcionValida) {
+        if (flag === 0) {
+            parImpar = prompt("Ingrese el número correspondiente que desea apostar:\n\n1: Par\n2: Impar\n0: para volver al menú");
+        }
+        if (parImpar === "1" || parImpar === "2") {
+            let parImparKey = (parImpar === "1" ? "Par" : "Impar");
+            console.log("Apostando por el " + parImparKey + ".");
+            cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el " + parImparKey + ". Fichas disponibles: " + fichasDisponibles));
+            if (isNaN(cantidad)) {
+                console.log("Ha decidido volver al menú.");
+                return;
+            } else if (cantidad < apuestaMinima || cantidad > fichasDisponibles) {
+                console.log("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
+                alert("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
+            } else {
+                fichasDisponibles -= cantidad;
+                if (parImparKey in apuesta) {
+                    apuesta[parImparKey] += cantidad;
+                } else {
+                    apuesta[parImparKey] = cantidad;
+                }
+                console.log("Ha apostado " + cantidad + " fichas por el " + parImparKey);
+                alert("Ha apostado " + cantidad + " fichas por el " + parImparKey);
+                opcionValida = true;
+            }
+        } else if (parImpar === "0" || parImpar === "") {
+            console.log("Ha decidido volver al menú.");
+            alert("Ha decidido volver al menú.");
+            return;
+        } else {
+            console.log("Opción inválida. Debe ingresar 1 o 2.");
+            alert("Opción inválida. Debe ingresar 1 o 2.");
         }
     }
 }
@@ -289,9 +333,9 @@ function apostarPorDoces(doce) {
             doce = prompt("Ingrese el doce por el que desea apostar:\n\n1: Primeros 12\n2: Segundos 12\n3: Terceros 12\n0: para volver al menú");
         }
         if (doce === "1" || doce === "2" || doce === "3") {
-            let doceKey = (doce === "1" ? "primer 12" : (doce === "2" ? "segundo 12" : "tercer 12"));
+            let doceKey = (doce === "1" ? "Primer 12" : (doce === "2" ? "Segundo 12" : "Tercer 12"));
             console.log("Apostando por el " + doceKey + ".");
-            cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el " + (doce === "1" ? "Primer" : (doce === "2" ? "Segundo" : "Tercer")) + " 12:\nFichas disponibles: " + fichasDisponibles));
+            cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el " + doceKey + ":\nFichas disponibles: " + fichasDisponibles));
             if (isNaN(cantidad)) {
                 console.log("Ha decidido volver al menú.");
                 return;
@@ -370,12 +414,12 @@ function apostarPorDosAUno(dosAUno) {
     }
     while (!opcionValida) {
         if (flag === 0) {
-            dosAUno = prompt("Ingrese la opción por la que desea apostar:\n\n1: Dos a uno 1°\n2: Dos a uno 2°\n3: Dos a uno 3°\n0: Volver al menú");
+            dosAUno = prompt("Ingrese la opción por la que desea apostar:\n\n1: Primer 2 a 1\n2: Segundo 2 a 1\n3: Tercer 2 a 1\n0: Volver al menú");
         }
         if (dosAUno === "1" || dosAUno === "2" || dosAUno === "3") {
-            const dosAUnoKey = "dosAUno" + dosAUno;
-            console.log("Apostando por el Dos a uno " + dosAUno + ".");
-            cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el Dos a uno " + dosAUno + ":\nFichas disponibles: " + fichasDisponibles));
+            let dosAUnoKey = (dosAUno === "1" ? "Primer 2 a 1" : (dosAUno === "2" ? "Segundo 2 a 1" : "Tercer 2 a 1"));
+            console.log("Apostando por el " + dosAUnoKey + ".");
+            cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el " + dosAUnoKey + ":\nFichas disponibles: " + fichasDisponibles));
             if (isNaN(cantidad)) {
                 console.log("Ha decidido volver al menú.");
                 return;
@@ -389,8 +433,8 @@ function apostarPorDosAUno(dosAUno) {
                 } else {
                     apuesta[dosAUnoKey] = cantidad;
                 }
-                console.log("Ha apostado " + cantidad + " fichas por el Dos a uno " + dosAUno + ".");
-                alert("Ha apostado " + cantidad + " fichas por el Dos a uno " + dosAUno + ".");
+                console.log("Ha apostado " + cantidad + " fichas por el " + dosAUnoKey + ".");
+                alert("Ha apostado " + cantidad + " fichas por el " + dosAUnoKey + ".");
                 opcionValida = true;
             }
         } else if (dosAUno === "0" || dosAUno === "") {
