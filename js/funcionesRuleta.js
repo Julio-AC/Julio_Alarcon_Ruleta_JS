@@ -3,6 +3,8 @@ class Apuesta {
         this.numeroGanador = 0;
         this.apuestaGanancia = 0;
         this.apuestaPerdida = 0;
+        this.fichaAntes = 0;
+        this.fichaActual = 0;
         this.numeros = {};
         this.colores = {};
         this.parImpar = {};
@@ -18,6 +20,12 @@ class Apuesta {
     }
     agregarApuestaPerdida(numero) {
         this.apuestaPerdida = numero;
+    }
+    agregarFichaAntes(numero) {
+        this.fichaAntes = numero;
+    }
+    agregarFichaActual(numero) {
+        this.fichaActual = numero;
     }
     agregarNumero(numero, valorApuesta) {
         this.numeros[numero] = valorApuesta;
@@ -39,410 +47,218 @@ class Apuesta {
     }
 }
 
-function mostrarMenu() {
-    while (true) {
-        opcion = prompt("--- Menú de opciones ---\nFichas disponibles: " + fichasDisponibles + "\n\n1: Empezar\n2: Apostar por color\n3: Apostar por Par o Impar\n4: Apostar por número\n5: Apostar por mitad\n6: Apostar por doces\n7: Apostar por Dos a Uno\n8: Ver apuestas realizadas\n0: Salir\nIngrese el número de la opción que desea:");
-        if (opcion === null) {
-            console.log("El usuario ha cerrado el cuadro de diálogo.");
-            return;
+function enviarInputApuesta() {
+    let inputApuesta = document.getElementById("inputApuesta");
+    let mensajeError = document.querySelector(".mensajeError");
+    let datoKey = document.getElementById("datoKeyApuesta").innerText;
+    let cantidad = parseInt(inputApuesta.value);
+    let verificarMinimo = apuestaMinima;
+    if (!isNaN(datoKeyApuesta)) {
+        datoKey = parseInt(datoKeyApuesta);
+    }
+    const idDato = tipoApuesta.find(tipoApuesta => tipoApuesta.PK === datoKey);
+    if (idDato || (!isNaN(datoKey) && datoKey >= 0 && datoKey <= 36)) {
+        if (datoKey in apuesta) {
+            verificarMinimo = 1;
         }
-        switch (opcion) {
-            case "0":
-                console.log("Operación cancelada.");
-                return;
-            case "1":
-                girarRuleta();
-                return;
-            case "2":
-                apostarPorColor(defaultData);
-                break;
-            case "3":
-                apostarPorParImpar(defaultData);
-                break;
-            case "4":
-                apostarPorNumero(defaultData);
-                break;
-            case "5":
-                apostarMitad(defaultData);
-                break;
-            case "6":
-                apostarPorDoces(defaultData);
-                break;
-            case "7":
-                apostarPorDosAUno(defaultData);
-                break;
-            case "8":
-                verApuestas();
-                break;
-            default:
-                console.log("Opción inválida. Por favor, ingrese una opción válida.");
-                alert("Opción inválida. Por favor, ingrese una opción válida.");
-                break;
+        if (cantidad >= verificarMinimo && cantidad <= fichasDisponibles) {
+            if (mensajeError) {
+                mensajeError.parentNode.removeChild(mensajeError);
+            }
+            Swal.fire({
+                title: 'CONFIRMAR APUESTA',
+                showDenyButton: true,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar',
+                denyButtonColor: '#ff0095',
+                denyButtonText: 'Cancelar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    apuestaCantidad(datoKey, cantidad)
+                }
+            });
+            cerrarInputApuesta()
+
+        } else {
+            if (!mensajeError) {
+                mensajeError = document.createElement("div");
+                mensajeError.innerText = "La apuesta debe ser mayor o igual a " + verificarMinimo + " y menor o igual a " + fichasDisponibles + ".";
+                mensajeError.classList.add("mensajeError");
+                inputApuesta.parentNode.insertBefore(mensajeError, inputApuesta.nextSibling);
+            }
         }
+    } else {
+        if (mensajeError) {
+            mensajeError.parentNode.removeChild(mensajeError);
+        }
+        mensajeError = document.createElement("div");
+        mensajeError.innerText = "No esta apostando por un dato valido.";
+        mensajeError.classList.add("mensajeError");
+        inputApuesta.parentNode.insertBefore(mensajeError, inputApuesta.nextSibling);
     }
 }
 
+function apuestaCantidad(datoKey, cantidad) {
+    let apuestaDatos = "";
+    const idDato = tipoApuesta.find(tipoApuesta => tipoApuesta.PK === datoKey);
+    if (idDato || (!isNaN(datoKey) && datoKey >= 0 && datoKey <= 36)) {
+        fichasDisponibles -= cantidad;
+        if (datoKey in apuesta) {
+            apuesta[datoKey] += cantidad;
+        } else {
+            apuesta[datoKey] = cantidad;
+        }
+        if (idDato) {
+            apuestaDatos = document.getElementById(idDato.idHTML);
+        } else {
+            idNumero = "apuestaNumero" + datoKey;
+            apuestaDatos = document.getElementById(idNumero);
+        }
+        apuestaDatos.innerText = apuesta[datoKey];
+        apuestaActualizarVisibilidad()
+        Swal.fire({
+            title: 'APUESTA REALIZADA',
+            toast: true,
+            timer: 1000,
+            icon: 'success',
+            showConfirmButton: false,
+        });
+    }
+}
+
+function apuestaRandom() {
+    let opcionApuesta = [];
+    for (let i = 0; i < numerosRuleta.length; i++) {
+        numero = numerosRuleta[i].numero;
+        opcionApuesta.push(numero);
+    }
+    for (let j = 0; j < tipoApuesta.length; j++) {
+        PK = tipoApuesta[j].PK;
+        opcionApuesta.push(PK);
+    }
+    largoOpcionApuesta = opcionApuesta.length;
+    randomOpcionApuesta = Math.floor(Math.random() * largoOpcionApuesta);
+    abrirInputApuesta(opcionApuesta[randomOpcionApuesta]);
+}
+
 function girarRuleta() {
-    let objApuesta = new Apuesta();
+    const storageKeys = Object.keys(localStorage);
     const numeroElegido = Math.floor(Math.random() * 37);
     const datoGanador = numerosRuleta.find((numero) => numero.numero === numeroElegido);
-    const bottomRuleta = datoGanador.bottomRuleta;
-    const leftRuleta = datoGanador.leftRuleta;
-    let mensaje = "El número ganador es " + datoGanador.numero + " de color " + datoGanador.color + "\n";
-    let sumaFichas = 0;
-    let ganancias = 0;
-    let perdidas = 0;
-    objApuesta.agregarNumeroGanador(numeroElegido);
-    console.log(apuesta);
+    const bottomRuleta = datoGanador.bottomRuleta, leftRuleta = datoGanador.leftRuleta;
+    const historialKey = 'historial-' + storageKeys.filter(clave => textHistorial.test(clave)).length;
+    let mensaje = `El número ganador es ${datoGanador.numero} de color ${datoGanador.color}\n`;
+    let objApuesta = new Apuesta();
+    let sumaFichas = 0, ganancias = 0, perdidas = 0;
     for (const apuestaItem in apuesta) {
-        console.log(apuestaItem);
-        let isGanador = false;
-        let multiplicador = 0;
-
-        if (apuestaItem === "Rojo" || apuestaItem === "Negro") {
-            objApuesta.agregarColor(apuestaItem, apuesta[apuestaItem]);
-        } else if (apuestaItem === "Par" || apuestaItem === "Impar") {
-            objApuesta.establecerParImpar(apuestaItem, apuesta[apuestaItem]);
-        } else if (apuestaItem === "1 a 18" || apuestaItem === "19 a 36") {
-            objApuesta.establecerMitad(apuestaItem, apuesta[apuestaItem]);
-        } else if (apuestaItem === "Primer 12" || apuestaItem === "Segundo 12" || apuestaItem === "Tercer 12") {
-            objApuesta.establecerDocena(apuestaItem, apuesta[apuestaItem]);
-        } else if (apuestaItem === "Primer 2 a 1" || apuestaItem === "Segundo 2 a 1" || apuestaItem === "Tercer 2 a 1") {
-            objApuesta.establecerDosAUno(apuestaItem, apuesta[apuestaItem]);
+        const tipoApuestaEncontrada = tipoApuesta.find(tipoApuesta => tipoApuesta.PK === apuestaItem);
+        let isGanador = false, multiplicador = 0;
+        if (tipoApuestaEncontrada) {
+            mensajeApuesta = tipoApuestaEncontrada.mensaje;
+            objApuesta[tipoApuestaEncontrada.funcionClass](apuestaItem, apuesta[apuestaItem]);
         } else if (!isNaN(apuestaItem)) {
+            mensajeApuesta = "el número " + apuestaItem;
             objApuesta.agregarNumero(apuestaItem, apuesta[apuestaItem]);
         }
-
         if (apuestaItem === datoGanador.mitad || apuestaItem === datoGanador.color || apuestaItem === datoGanador.parImpar) {
             multiplicador = 2;
             isGanador = true;
         } else if (apuestaItem === datoGanador.docena || apuestaItem === datoGanador.dosAUno) {
             multiplicador = 3;
             isGanador = true;
-        } else if (!isNaN(apuestaItem)) {
-            if (parseInt(apuestaItem) === numeroElegido) {
-                multiplicador = 35;
-                isGanador = true;
-            }
+        } else if (!isNaN(apuestaItem) && parseInt(apuestaItem) === numeroElegido) {
+            multiplicador = 35;
+            isGanador = true;
         }
-
         if (isGanador) {
-            sumaFichas += apuesta[apuestaItem] * multiplicador;
-            ganancias += apuesta[apuestaItem] * multiplicador - apuesta[apuestaItem];
-            let mensajeGanar = apuesta[apuestaItem] * multiplicador - apuesta[apuestaItem];
-            mensaje += "\nHa ganado " + mensajeGanar + " fichas por apostar a " + obtenerMensajeApostado(apuestaItem);
+            const fichasApostadas = apuesta[apuestaItem];
+            const fichasGanadas = fichasApostadas * multiplicador - fichasApostadas;
+            sumaFichas += fichasApostadas * multiplicador;
+            ganancias += fichasGanadas;
+            mensaje += `\nHa ganado ${fichasGanadas} fichas por apostar a ${mensajeApuesta}`;
         } else {
-            perdidas += apuesta[apuestaItem];
-            mensaje += "\nHa perdido " + apuesta[apuestaItem] + " fichas por apostar a " + obtenerMensajeApostado(apuestaItem);
+            const fichasPerdidas = apuesta[apuestaItem];
+            perdidas += fichasPerdidas;
+            mensaje += `\nHa perdido ${fichasPerdidas} fichas por apostar a ${mensajeApuesta}`;
         }
         delete apuesta[apuestaItem];
     }
-    objApuesta.agregarApuestaGanancia(ganancias);
-    objApuesta.agregarApuestaPerdida(perdidas);
-    historialApuestas.push(objApuesta);
+    objApuesta.agregarFichaAntes(fichasDisponibles), objApuesta.agregarNumeroGanador(numeroElegido);
+    objApuesta.agregarApuestaGanancia(ganancias), objApuesta.agregarApuestaPerdida(perdidas);
     fichasDisponibles += sumaFichas;
+    objApuesta.agregarFichaActual(fichasDisponibles);
+    localStorage.setItem(historialKey, JSON.stringify(objApuesta));
     moverFicha(bottomRuleta, leftRuleta);
-    mensaje += "\n\nPerdidas Total: " + perdidas + "\nGanancias Total: " + ganancias + "\nFichas Totales: " + fichasDisponibles;
-    console.log(mensaje);
-    mostrarMensaje(mensaje);
-    console.log(historialApuestas);
-}
-
-function obtenerMensajeApostado(apuestaItem) {
-    if (apuestaItem === "1 a 18") {
-        return "la mitad 1-18";
-    } else if (apuestaItem === "19 a 36") {
-        return "la mitad 19-36";
-    } else if (apuestaItem === "Rojo") {
-        return "el color Rojo";
-    } else if (apuestaItem === "Negro") {
-        return "el color Negro";
-    } else if (apuestaItem === "Par") {
-        return "los números pares";
-    } else if (apuestaItem === "Impar") {
-        return "los números impares";
-    } else if (apuestaItem === "Primer 12") {
-        return "el Primer 12";
-    } else if (apuestaItem === "Segundo 12") {
-        return "el Segundo 12";
-    } else if (apuestaItem === "Tercer 12") {
-        return "el Tercer 12";
-    } else if (apuestaItem === "Primer 2 a 1") {
-        return "el Primer 2 a 1";
-    } else if (apuestaItem === "Segundo 2 a 1") {
-        return "el Segundo 2 a 1";
-    } else if (apuestaItem === "Tercer 2 a 1") {
-        return "el Tercer 2 a 1";
-    } else if (!isNaN(apuestaItem)) {
-        return "el número " + apuestaItem;
-    }
+    apuestaBorrar();
+    mensaje += `\n\nPerdidas Total: ${perdidas}\nGanancias Total: ${ganancias}\nFichas Totales: ${fichasDisponibles}`;
 }
 
 function moverFicha(bottomRuleta, leftRuleta) {
     const ficha = document.getElementById('ficha');
-    console.log(bottomRuleta);
-    console.log(leftRuleta);
     ficha.style.bottom = bottomRuleta;
     ficha.style.left = leftRuleta;
 }
 
-function mostrarMensaje(mensaje) {
-    const mensajeElement = document.getElementById('mensaje');
-    mensajeElement.textContent = mensaje;
+function apuestaBorrar() {
+    for (cantidadFichas in apuesta) {
+        fichasDisponibles += apuesta[cantidadFichas];
+    }
+    apuesta = {};
+    let apuestaClass = document.getElementsByClassName("apuesta");
+    for (let i = 0; i < apuestaClass.length; i++) {
+        apuestaClass[i].innerText = "0";
+    }
+    apuestaActualizarVisibilidad()
 }
 
-function verApuestas() {
-    let mensaje = "Apuestas actuales:\n\n";
-    for (const [key, value] of Object.entries(apuesta)) {
-        mensaje += key + ": " + value + " fichas.\n";
+function apuestaActualizarVisibilidad() {
+    const apuestaElements = document.getElementsByClassName("apuesta");
+    const mostrarFichas = document.getElementsByName("mostrarFichas");
+    for (const elementFichas of mostrarFichas) {
+        elementFichas.innerText = fichasDisponibles;
     }
-    console.log(mensaje);
-    alert(mensaje);
-}
-
-function apostarPorColor(color) {
-    let opcionValida = false;
-    let flag = 1;
-    if (color === "") {
-        flag = 0;
-    }
-    while (!opcionValida) {
-        if (flag === 0) {
-            color = prompt("Ingrese el color por el que desea apostar:\n1: para Rojo\n2: para Negro\n0: para volver al menú");
-        }
-        if (color === "1" || color === "2") {
-            let colorKey = color === "1" ? "Rojo" : "Negro";
-            let cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el color " + colorKey + ":\nFichas disponibles: " + fichasDisponibles + ":"));
-            if (isNaN(cantidad)) {
-                console.log("Ha decidido volver al menú.");
-                return;
-            } else if (cantidad < apuestaMinima || cantidad > fichasDisponibles) {
-                console.log("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
-                alert("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
-            } else {
-                fichasDisponibles -= cantidad;
-                if (colorKey in apuesta) {
-                    apuesta[colorKey] += cantidad;
-                } else {
-                    apuesta[colorKey] = cantidad;
-                }
-                console.log("Ha apostado " + cantidad + " fichas por el color " + colorKey + ".");
-                alert("Ha apostado " + cantidad + " fichas por el color " + colorKey + ".");
-                opcionValida = true;
-            }
-        } else if (color === "0" || color === "" || color == null) {
-            console.log("Ha decidido volver al menú.");
-            alert("Ha decidido volver al menú.");
-            return;
+    for (const element of apuestaElements) {
+        if (element.innerText === "0") {
+            element.style.opacity = "0";
         } else {
-            console.log("Opción inválida. Por favor, ingrese una opción válida.");
-            alert("Opción inválida. Por favor, ingrese una opción válida.");
+            element.style.opacity = "1";
         }
     }
 }
 
-function apostarPorParImpar(parImpar){
-    let opcionValida = false;
-    let flag = 1;
-    if (parImpar === "") {
-        flag = 0;
-    }
-    while (!opcionValida) {
-        if (flag === 0) {
-            parImpar = prompt("Ingrese el número correspondiente que desea apostar:\n\n1: Par\n2: Impar\n0: para volver al menú");
-        }
-        if (parImpar === "1" || parImpar === "2") {
-            let parImparKey = (parImpar === "1" ? "Par" : "Impar");
-            console.log("Apostando por el " + parImparKey + ".");
-            cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el " + parImparKey + ". Fichas disponibles: " + fichasDisponibles));
-            if (isNaN(cantidad)) {
-                console.log("Ha decidido volver al menú.");
-                return;
-            } else if (cantidad < apuestaMinima || cantidad > fichasDisponibles) {
-                console.log("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
-                alert("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
-            } else {
-                fichasDisponibles -= cantidad;
-                if (parImparKey in apuesta) {
-                    apuesta[parImparKey] += cantidad;
-                } else {
-                    apuesta[parImparKey] = cantidad;
+function informacionHistorial() {
+    const leftSection = document.querySelector('.left-section');
+    const rightSection = document.querySelector('.right-section');
+    let objHistorial = Object.keys(localStorage).filter(key => key.startsWith('historial-')).sort((a, b) => {
+        const numA = parseInt(a.split('-')[1]);
+        const numB = parseInt(b.split('-')[1]);
+        return numA - numB;
+    });
+    for (const keyHistorial of objHistorial) {
+        let botonHistorial = document.createElement('button');
+        botonHistorial.textContent = "Apuesta " + keyHistorial.split('-')[1];
+        botonHistorial.classList.add('botonHistorial');
+        botonHistorial.addEventListener('click', () => {
+            const valor = JSON.parse(localStorage.getItem(keyHistorial));
+            let mensaje = "";
+            for (const clave in valor) {
+                if (valor.hasOwnProperty(clave) && valor[clave] !== null) {
+                    if (typeof valor[clave] === 'object') {
+                        for (const subClave in valor[clave]) {
+                            if (valor[clave].hasOwnProperty(subClave)) {
+                                mensaje += `${subClave}: ${valor[clave][subClave]}\n`;
+                            }
+                        }
+                    } else {
+                        mensaje += `${clave}: ${valor[clave]}\n`;
+                    }
                 }
-                console.log("Ha apostado " + cantidad + " fichas por el " + parImparKey);
-                alert("Ha apostado " + cantidad + " fichas por el " + parImparKey);
-                opcionValida = true;
             }
-        } else if (parImpar === "0" || parImpar === "") {
-            console.log("Ha decidido volver al menú.");
-            alert("Ha decidido volver al menú.");
-            return;
-        } else {
-            console.log("Opción inválida. Debe ingresar 1 o 2.");
-            alert("Opción inválida. Debe ingresar 1 o 2.");
-        }
+            rightSection.innerText = mensaje;
+        });
+        leftSection.appendChild(botonHistorial);
     }
 }
 
-function apostarPorNumero(numero) {
-    let opcionValida = false;
-    let flag = 1;
-    if (numero === "") {
-        flag = 0;
-    }
-    while (!opcionValida) {
-        if (flag === 0) {
-            numero = parseInt(prompt("Ingrese el número por el que desea apostar:\nNúmero válido entre 0 y 36\nX: para volver al menú"));
-        }
-        if (numero === "x" || numero < numeroMinimo || numero > numeroMaximo) {
-            console.log("Número inválido. Debe ingresar un número válido entre 0 y 36.");
-            alert("Número inválido. Debe ingresar un número válido entre 0 y 36.");
-            return;
-        } else {
-            console.log("Apostando por el número: " + numero);
-            cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el número:\nFichas disponibles: " + fichasDisponibles));
-            if (isNaN(cantidad)) {
-                console.log("Ha decidido volver al menú.");
-                return;
-            } else if (cantidad < apuestaMinima || cantidad > fichasDisponibles) {
-                console.log("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
-                alert("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
-            } else {
-                fichasDisponibles -= cantidad;
-                if (numero in apuesta) {
-                    apuesta[numero] += cantidad;
-                } else {
-                    apuesta[numero] = cantidad;
-                }
-                console.log("Ha apostado " + cantidad + " fichas por el número " + numero + ".");
-                alert("Ha apostado " + cantidad + " fichas por el número " + numero + ".");
-                opcionValida = true;
-            }
-        }
-    }
-}
 
-function apostarPorDoces(doce) {
-    let opcionValida = false;
-    let flag = 1;
-    if (doce === "") {
-        flag = 0;
-    }
-    while (!opcionValida) {
-        if (flag === 0) {
-            doce = prompt("Ingrese el doce por el que desea apostar:\n\n1: Primeros 12\n2: Segundos 12\n3: Terceros 12\n0: para volver al menú");
-        }
-        if (doce === "1" || doce === "2" || doce === "3") {
-            let doceKey = (doce === "1" ? "Primer 12" : (doce === "2" ? "Segundo 12" : "Tercer 12"));
-            console.log("Apostando por el " + doceKey + ".");
-            cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el " + doceKey + ":\nFichas disponibles: " + fichasDisponibles));
-            if (isNaN(cantidad)) {
-                console.log("Ha decidido volver al menú.");
-                return;
-            } else if (cantidad < apuestaMinima || cantidad > fichasDisponibles) {
-                console.log("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
-                alert("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
-            } else {
-                fichasDisponibles -= cantidad;
-                if (doceKey in apuesta) {
-                    apuesta[doceKey] += cantidad;
-                } else {
-                    apuesta[doceKey] = cantidad;
-                }
-                console.log("Ha apostado " + cantidad + " fichas por el " + doceKey + ".");
-                alert("Ha apostado " + cantidad + " fichas por el " + doceKey + ".");
-                opcionValida = true;
-            }
-        } else if (doce === "0" || doce === "") {
-            console.log("Ha decidido volver al menú.");
-            alert("Ha decidido volver al menú.");
-            return;
-        } else {
-            console.log("Opción inválida. Por favor, ingrese una opción válida.");
-            alert("Opción inválida. Por favor, ingrese una opción válida.");
-        }
-    }
-}
 
-function apostarMitad(mitad) {
-    let opcionValida = false;
-    let flag = 1;
-    if (mitad === "") {
-        flag = 0;
-    }
-    while (!opcionValida) {
-        if (flag === 0) {
-            mitad = prompt("Ingrese el número correspondiente a la mitad de la tabla en la que desea apostar:\n\n1: para la mitad 1 a 18\n2: para la mitad 19 a 36\n0: para volver al menú");
-        }
-        if (mitad === "1" || mitad === "2") {
-            let mitadKey = (mitad === "1" ? "1 a 18" : "19 a 36");
-            console.log("Apostando por la mitad " + mitadKey + ".");
-            cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por la mitad " + mitadKey + ". Fichas disponibles: " + fichasDisponibles));
-            if (isNaN(cantidad)) {
-                console.log("Ha decidido volver al menú.");
-                return;
-            } else if (cantidad < apuestaMinima || cantidad > fichasDisponibles) {
-                console.log("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
-                alert("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
-            } else {
-                fichasDisponibles -= cantidad;
-                if (mitadKey in apuesta) {
-                    apuesta[mitadKey] += cantidad;
-                } else {
-                    apuesta[mitadKey] = cantidad;
-                }
-                console.log("Ha apostado " + cantidad + " fichas por la mitad " + mitadKey);
-                alert("Ha apostado " + cantidad + " fichas por la mitad " + mitadKey);
-                opcionValida = true;
-            }
-        } else if (mitad === "0" || mitad === "") {
-            console.log("Ha decidido volver al menú.");
-            alert("Ha decidido volver al menú.");
-            return;
-        } else {
-            console.log("Opción inválida. Debe ingresar 1 o 2.");
-            alert("Opción inválida. Debe ingresar 1 o 2.");
-        }
-    }
-}
-
-function apostarPorDosAUno(dosAUno) {
-    let opcionValida = false;
-    let flag = 1;
-    if (dosAUno === "") {
-        flag = 0;
-    }
-    while (!opcionValida) {
-        if (flag === 0) {
-            dosAUno = prompt("Ingrese la opción por la que desea apostar:\n\n1: Primer 2 a 1\n2: Segundo 2 a 1\n3: Tercer 2 a 1\n0: Volver al menú");
-        }
-        if (dosAUno === "1" || dosAUno === "2" || dosAUno === "3") {
-            let dosAUnoKey = (dosAUno === "1" ? "Primer 2 a 1" : (dosAUno === "2" ? "Segundo 2 a 1" : "Tercer 2 a 1"));
-            console.log("Apostando por el " + dosAUnoKey + ".");
-            cantidad = parseInt(prompt("Ingrese la cantidad que desea apostar por el " + dosAUnoKey + ":\nFichas disponibles: " + fichasDisponibles));
-            if (isNaN(cantidad)) {
-                console.log("Ha decidido volver al menú.");
-                return;
-            } else if (cantidad < apuestaMinima || cantidad > fichasDisponibles) {
-                console.log("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
-                alert("Cantidad inválida. Debe ingresar un número entre " + apuestaMinima + " y " + fichasDisponibles + ".");
-            } else {
-                fichasDisponibles -= cantidad;
-                if (dosAUnoKey in apuesta) {
-                    apuesta[dosAUnoKey] += cantidad;
-                } else {
-                    apuesta[dosAUnoKey] = cantidad;
-                }
-                console.log("Ha apostado " + cantidad + " fichas por el " + dosAUnoKey + ".");
-                alert("Ha apostado " + cantidad + " fichas por el " + dosAUnoKey + ".");
-                opcionValida = true;
-            }
-        } else if (dosAUno === "0" || dosAUno === "") {
-            console.log("Ha decidido volver al menú.");
-            alert("Ha decidido volver al menú.");
-            return;
-        } else {
-            console.log("Opción inválida. Por favor, ingrese una opción válida.");
-            alert("Opción inválida. Por favor, ingrese una opción válida.");
-        }
-    }
-}

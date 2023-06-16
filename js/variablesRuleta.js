@@ -1,12 +1,12 @@
 const autor = 'Julio';
-const version = '1.4';
+const version = '2.2';
 const numeroMaximo = 36;
 const numeroMinimo = 0;
 const defaultData = "";
+const textHistorial = /^historial/;
 /*JulioAlarcon*/
 let fichasDisponibles = 5000;
 let apuesta = {};
-let historialApuestas = [];
 let apuestaMinima = 200;
 let cantidad = 0;
 let numero = 0;
@@ -59,3 +59,17 @@ const numerosRuleta = [
     { numero: 36, bottomRuleta: '186px', leftRuleta: '409px', color: "Rojo", parImpar: "Par", docena: "Tercer 12", mitad: "19 a 36", dosAUno: "Tercer 2 a 1" },
 ];
 
+const tipoApuesta = [
+    { PK: "Rojo", funcionClass: "agregarColor", mensaje: "el color Rojo", idHTML:"colorRojo" },
+    { PK: "Negro", funcionClass: "agregarColor", mensaje: "el color Negro", idHTML:"colorNegro" },
+    { PK: "Par", funcionClass: "establecerParImpar", mensaje: "los números pares", idHTML:"pares" },
+    { PK: "Impar", funcionClass: "establecerParImpar", mensaje: "los números impares", idHTML:"impares" },
+    { PK: "1 a 18", funcionClass: "establecerMitad", mensaje: "la mitad 1 a 18", idHTML:"1a18" },
+    { PK: "19 a 36", funcionClass: "establecerMitad", mensaje: "la mitad 19 a 36", idHTML:"19a36" },
+    { PK: "Primer 12", funcionClass: "establecerDocena", mensaje: "el Primer 12", idHTML:"doce1" },
+    { PK: "Segundo 12", funcionClass: "establecerDocena", mensaje: "el Segundo 12", idHTML:"doce2" },
+    { PK: "Tercer 12", funcionClass: "establecerDocena", mensaje: "el Tercer 12", idHTML:"doce3" },
+    { PK: "Primer 2 a 1", funcionClass: "establecerDosAUno", mensaje: "el Primer 2 a 1", idHTML:"dosAUno1" },
+    { PK: "Segundo 2 a 1", funcionClass: "establecerDosAUno", mensaje: "el Segundo 2 a 1", idHTML:"dosAUno2" },
+    { PK: "Tercer 2 a 1", funcionClass: "establecerDosAUno", mensaje: "el Tercer 2 a 1", idHTML:"dosAUno3" },
+];

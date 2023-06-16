@@ -1,44 +1,3 @@
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-    overflow-y: hidden;
-}
-
-.modal-content {
-    background-color: #003c0a;
-    margin: 10% auto;
-    padding: 10px;
-    border: 2px solid #000000;
-    width: 72%;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.close {
-    color: #aaa;
-    cursor: pointer;
-    font-size: 28px;
-}
-
-.close:hover {
-    color: black;
-}
-
-.modal-body {
-    padding: 20px;
-}
-
 .scrollable {
     overflow: auto;
 }
@@ -48,3 +7,247 @@
     width: 100%;
     height: 600px;
 }
+
+.modalRuleta {
+    display: none;
+    position: fixed;
+    z-index: 4;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow-y: hidden;
+}
+
+.modalRuleta-content {
+    background-color: #000000;
+    margin: 10% auto;
+    padding: 10px;
+    border: 2px solid #000000;
+    width: 1402px;
+    border-radius: 30px;
+    background-image: url('/media/PokerBackground.png');
+}
+
+.modalRuleta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modalRuleta-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modalRuleta-body {
+    padding: 20px;
+}
+
+.modalFichas {
+    display: none;
+    position: fixed;
+    z-index: 5;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modalFichas-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.modalFichas-header {
+    border-bottom: 1px solid #888;
+    padding-bottom: 10px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.modalApuesta {
+    display: none;
+    position: fixed;
+    z-index: 5;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.menuMostrarTitulo {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 5;
+}
+
+.menuMostrarContent {
+    font-size: 34px;
+    color: #666;
+    padding: 2px;
+    border-radius: 3px;
+    margin-top: 5px;
+    z-index: 5;
+}
+
+.modalInputApuesta {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 5;
+}
+
+.modalInputApuesta-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    text-align: center;
+    align-items: center;
+    border-radius: 30px;
+}
+
+.modalInputApuesta-header {
+    border-bottom: 1px solid #888;
+    padding-bottom: 10px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.modalInputApuesta-titulo {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 5;
+}
+
+.modalInputApuesta-content input {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+.modalInputApuesta-content input:focus {
+    outline: none;
+    border-color: #ff0095;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.modalInputApuesta-content button {
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 20px;
+}
+
+.modalInputApuesta-footer #cerrarInputApuesta {
+    background-color: #c70053;
+    color: #fff;
+}
+
+.modalInputApuesta-footer #enviarInputApuesta {
+    background-color: #0024f0;
+    color: #ffffff;
+}
+
+.modalHistorial {
+    display: flex;
+    position: fixed;
+    z-index: 5;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 400px;
+    width: 700px;
+    display: flex;
+    align-items: center;
+}
+
+.modalHistorial-content {
+    display: flex;
+    height: 100%;
+}
+
+.left-section {
+    width: 35%;
+    height: 400px;
+    overflow-y: auto;
+    border-radius: 10%;
+}
+
+.botonHistorial {
+    width: 100%;
+    max-height: 200px;
+    background-color: blue;
+    color: #fefefe;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.botonHistorial:hover {
+    cursor: pointer;
+    background-color: #704fff71;
+}
+
+.right-section {
+    width: 80%;
+    overflow-y: auto;
+    font-size: 28px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 3%;
+}
+
+.cerrarModalHistorial {
+    position: absolute;
+    top: 5px;
+    right: 25px;
+    background-color: #c70053ab;
+    color: #ffffff;
+    border: none;
+    font-size: 15px;
+    border-radius: 15%;
+}
+
+.cerrarModalHistorial:hover {
+    cursor: pointer;
+    background-color: #fd00006b;
+}
+
+
+

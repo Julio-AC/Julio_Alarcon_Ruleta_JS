@@ -10,10 +10,10 @@
     border: 3px;
     border-color: #760000;
     transition: all 0.3s ease-in-out;
-    padding: 10px 20px; /* Espacio interno */
-    display: flex; /* Utilizar flexbox */
-    justify-content: center; /* Centrar horizontalmente */
-    align-items: center; /* Centrar verticalmente */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 2;
 }
 
@@ -33,12 +33,12 @@
     border: 3px;
     border-color: #ffffff;
     transition: all 0.3s ease-in-out;
-    width: 51px; /* Ancho fijo */
+    width: 51px;
     height: 78px;
-    padding: 10px 20px; /* Espacio interno */
-    display: flex; /* Utilizar flexbox */
-    justify-content: center; /* Centrar horizontalmente */
-    align-items: center; /* Centrar verticalmente */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 2;
 }
 
@@ -58,12 +58,12 @@
     border: 3px;
     border-color: #ffffff;
     transition: all 0.3s ease-in-out;
-    width: 70px; /* Ancho fijo */
+    width: 70px;
     height: 242px;
-    padding: 10px 20px; /* Espacio interno */
-    display: flex; /* Utilizar flexbox */
-    justify-content: center; /* Centrar horizontalmente */
-    align-items: center; /* Centrar verticalmente */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 2;
     border-top-left-radius: 100%;
     border-bottom-left-radius: 100%;
@@ -86,12 +86,12 @@
     border: 3px;
     border-color: #ffffff;
     transition: all 0.3s ease-in-out;
-    width: 213px; /* Ancho fijo */
+    width: 213px;
     height: 61px;
-    padding: 10px 20px; /* Espacio interno */
-    display: flex; /* Utilizar flexbox */
-    justify-content: center; /* Centrar horizontalmente */
-    align-items: center; /* Centrar verticalmente */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 2;
 }
 
@@ -111,16 +111,39 @@
     border: 3px;
     border-color: #ffffff;
     transition: all 0.3s ease-in-out;
-    width: 106px; /* Ancho fijo */
+    width: 106px;
     height: 64px;
-    padding: 10px 20px; /* Espacio interno */
-    display: flex; /* Utilizar flexbox */
-    justify-content: center; /* Centrar horizontalmente */
-    align-items: center; /* Centrar verticalmente */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 2;
 }
 
 .buttonColorParMitad:hover {
     cursor: pointer;
     background-color: #00058f84;
+}
+
+.buttonMenu {
+    position: relative;
+    background-color: #0000005b;
+    color: #ffffff;
+    font-size: 25px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+    z-index: 2;
+    border-radius: 100%;
+    width: 90px;
+    height: 90px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonMenu:hover {
+    cursor: pointer;
+    background-color: #fd00006b;
 }
