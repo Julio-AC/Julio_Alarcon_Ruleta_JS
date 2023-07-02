@@ -43,7 +43,7 @@ const htmlModalRuleta = `
                         <button class="buttonMenu" style="bottom: 393px; left: 576px;" onclick="apuestaRandom()">Apuesta Random</button>
                         <button class="buttonMenu" style="bottom: 483px; left: 736px;" onclick="aumentarFichas()">+5000</button>
                         <button class="buttonMenu" style="bottom: 573px; left: 896px;" onclick="apuestaBorrar()">Borrar Apuesta</button>
-                        <button class="buttonMenu" style="bottom: 663px; left: 1056px;" onclick="">Reglas</button>
+                        <button class="buttonMenu" style="bottom: 663px; left: 1056px;" onclick="abrirModalReglas()">Reglas</button>
                         <button class="buttonMenu" style="bottom: 753px; left: 1216px;" onclick="cerrarModalRuleta()">Cerrar</button>
                     </div>
                 </div>

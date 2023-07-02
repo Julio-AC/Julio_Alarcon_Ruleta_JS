@@ -64,6 +64,29 @@ function abrirModalHistorial() {
     }
 }
 
+function abrirModalReglas() {
+    const modalReglas = document.getElementById('modalReglas');
+    if (!modalReglas) {
+        const modalHtml = `
+            <div id="modalReglas" class="modalReglas" onclick="cerrarModalReglas()">
+                <div class="modalFichas-content">
+                    <div class="modalFichas-header">
+                        <div class="menuMostrarTitulo">Reglas</div>
+                    </div>
+                    <div class="modalFichas-body">
+                        <ul>
+                            <li>Derechos Reservados.</li>
+                            <li>No vender.</li>
+                            <li>Esto es un simulador no pasar por verdadero.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+    }
+}
+
 function cerrarModalRuleta() {
     const modalRuleta = document.getElementById('modalRuleta');
     if (modalRuleta) {
@@ -91,5 +114,12 @@ function cerrarModalHistorial() {
     const modalHistorial = document.getElementById('modalHistorial');
     if (modalHistorial) {
         modalHistorial.remove();
+    }
+}
+
+function cerrarModalReglas() {
+    const modalReglas = document.getElementById('modalReglas');
+    if (modalReglas) {
+        modalReglas.remove();
     }
 }
