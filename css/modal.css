@@ -9,7 +9,6 @@
 }
 
 .modalRuleta {
-    display: none;
     position: fixed;
     z-index: 4;
     left: 0;
@@ -108,7 +107,6 @@
 }
 
 .modalInputApuesta {
-    display: none;
     position: fixed;
     left: 0;
     top: 0;

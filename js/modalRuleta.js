@@ -1,32 +1,4 @@
 /*JulioAlarcon*/
-function aumentarFichas() {
-    fichasDisponibles += 5000;
-    apuestaActualizarVisibilidad()
-}
-
-function abrirModalRuleta() {
-    apuestaActualizarVisibilidad()
-    document.getElementById("modalRuleta").style.display = "block";
-}
-
-function cerrarModalRuleta() {
-    document.getElementById("modalRuleta").style.display = "none";
-}
-
-function cerrarInputApuesta() {
-    let modalInputApuesta = document.getElementById("modalInputApuesta");
-    let inputApuesta = document.getElementById("inputApuesta");
-    modalInputApuesta.style.display = "none";
-    inputApuesta.value = "";
-}
-
-function teclaEnter(event) {
-    if (event.keyCode === 13) {
-        event.preventDefault();
-        enviarInputApuesta();
-    }
-}
-
 function abrirModalFichas() {
     apuestaActualizarVisibilidad();
     let modal = document.getElementById("modalFichas");
@@ -34,10 +6,6 @@ function abrirModalFichas() {
     setTimeout(function () {
         modal.style.display = "none";
     }, 1500);
-}
-
-function cerrarModalFichas() {
-    document.getElementById("modalFichas").style.display = "none";
 }
 
 function abrirModalApuesta() {
@@ -54,23 +22,32 @@ function abrirModalApuesta() {
     document.getElementById("modalApuesta").style.display = "block";
 }
 
-function cerrarModalApuesta() {
-    document.getElementById("modalApuesta").style.display = "none";
-}
-
 function abrirInputApuesta(datoKey) {
-    let modalInputApuesta = document.getElementById("modalInputApuesta");
-    let datoKeyApuesta = document.getElementById("datoKeyApuesta");
-    datoKeyApuesta.innerText = datoKey;
-    modalInputApuesta.style.display = "block";
+    const modalInputApuesta = document.getElementById('modalInputApuesta');
+    if (!modalInputApuesta) {
+        const htmlInputApuesta = `
+            <div id="modalInputApuesta" class="modalInputApuesta">
+                <div class="modalInputApuesta-content">
+                    <div class="modalInputApuesta-header">
+                        <div class="modalInputApuesta-titulo" id="datoKeyApuesta">Apuesta: ${datoKey}</div>
+                    </div>
+                    <input id="inputApuesta" type="number" min="0" max="1000" placeholder="Cantidad" onkeypress="teclaEnterInputApuesta(event)">
+                    <div class="modalInputApuesta-footer">
+                        <button id="enviarInputApuesta" class="enviarInputApuesta" onclick="enviarInputApuesta('${datoKey}')">Apostar</button>
+                        <button id="cerrarInputApuesta" class="cerrarInputApuesta" onclick="cerrarInputApuesta()">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', htmlInputApuesta);
+    }
+    let inputApuesta = document.getElementById("inputApuesta");
     inputApuesta.focus();
 }
-
 
 function abrirModalHistorial() {
     const modalHistorial = document.getElementById('modalHistorial');
     if (!modalHistorial) {
-        // El modal no está creado, se crea y se agrega al documento
         const modalHtml = `
             <div id="modalHistorial" class="modalHistorial">
                 <div class="modalHistorial-content">
@@ -87,11 +64,32 @@ function abrirModalHistorial() {
     }
 }
 
+function cerrarModalRuleta() {
+    const modalRuleta = document.getElementById('modalRuleta');
+    if (modalRuleta) {
+        modalRuleta.remove();
+    }
+    apuestaBorrar()
+}
+
+function cerrarModalFichas() {
+    document.getElementById("modalFichas").style.display = "none";
+}
+
+function cerrarModalApuesta() {
+    document.getElementById("modalApuesta").style.display = "none";
+}
+
+function cerrarInputApuesta() {
+    const modalInputApuesta = document.getElementById('modalInputApuesta');
+    if (modalInputApuesta) {
+        modalInputApuesta.remove();
+    }
+}
+
 function cerrarModalHistorial() {
     const modalHistorial = document.getElementById('modalHistorial');
     if (modalHistorial) {
         modalHistorial.remove();
     }
 }
-
-abrirModalRuleta()

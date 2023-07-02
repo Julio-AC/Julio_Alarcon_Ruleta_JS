@@ -14,38 +14,24 @@
 
 <body class="background-purple">
     <div class="card background-black">
-        <h1 class="text-yellow">Ruleta de la Suerte: Simulador interactivo </h1>
+        <h1 class="text-yellow">Ruleta de la Suerte: Simulador interactivo</h1>
     </div>
-
     <div class="card background-pink">
-        <h2>Introdución</h2>
+        <h2>Introducción</h2>
         <ul>
-            <li>Este es un programa que simula una mesa de ruleta en un casino, donde los jugadores pueden realizar
-                apuestas en distintas categorías y ganar fichas en base a los resultados de la ruleta.</li>
+            <li>Este es un programa que simula una mesa de ruleta en un casino, donde los jugadores pueden realizar apuestas en distintas categorías y ganar fichas en base a los resultados de la ruleta.</li>
         </ul>
-        <h2>Comandos</h2>
+        <h2>Objetivo</h2>
         <ul>
-            <li>Puede invocar la función <a class="text-green" onclick="abrirModalRuleta()" style="font-size: 35px">abrirModalRuleta()</a> desde la consola o bien pulsar sobre el botón 'Abrir Ruleta' para iniciar el juego.</li>
-            <li><button class="buttonOpenRuleta" onclick="abrirModalRuleta()">Abrir Ruleta</button></li>
-            <li>En caso de que se quede sin fichas puede invocar la función <a class="text-green"
-                    onclick="aumentarFichas()" style="font-size: 35px">aumentarFichas()</a> la cual le otorgara 5000 fichas o
-                bien pulsar sobre el botón '+5000'.</li>
-            <li><button class="buttonDinero" onclick="aumentarFichas()">+5000</button></li>
+            <li>Nuestro objetivo es que nuestros usuarios puedan aprender o crear una mejor estrategia para ganar en una verdadera Ruleta de la suerte</li>
         </ul>
         <h2>Notas</h2>
         <ul>
-            <li>La apuesta minima es de <span id="apuesta-minima"></span> fichas.</li>
-            <li>Una vez realizada una apuesta, esta no puede ser retirada.</li>
-            <li>Lamentablemente, no es posible realizar apuestas por un número específico en este momento, dado que se
-                requiere el uso de herramientas avanzadas tales como arrays y clases para hacer que la implementación
-                sea más sencilla.</li>
-            <li>Las apuestas ganadoras reciben un pago de 2 a 1, excepto por las apuestas al tercio, que pagan 3 a 1.
-            </li>
-            <li>El jugador puede elegir entre apostar por el color rojo, negro, par, impar, 1 a 18, 19 a 36 o uno de los
-                tres 12 del tablero.</li>
+            <li>La apuesta mínima es de <span id="apuesta-minima"></span> fichas.</li>
+            <li>Las apuestas ganadoras reciben un pago de 2 a 1, excepto por las 2 a 1 o los 12, que pagan 3 a 1.</li>
+            <li><button class="buttonOpenRuleta" onclick="crearTablaRuleta()">Abrir Ruleta</button></li>
         </ul>
         <!--
-        ...Muchos IDS que se usaran con el DOM...
         ⠄⠄⠄⠄⣠⣴⣿⣿⣿⣷⣦⡠⣴⣶⣶⣶⣦⡀⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄
         ⠄⠄⠄⣴⣿⣿⣫⣭⣭⣭⣭⣥⢹⣟⣛⣛⣛⣃⣀⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄
         ⠄⣠⢸⣿⣿⣿⣿⢯⡓⢻⠿⠿⠷⡜⣯⠭⢽⠿⠯⠽⣀⠄⠄⠄⠄⠄⠄⠄⠄⠄
@@ -57,134 +43,6 @@
         ⣍⡲⠮⣍⣙⣛⣛⡻⠿⠿⠿⠿⠿⠿⠿⠖⠂⠄⠄⠄⠄⠄⠄⠄⠄⣸⠄⠄⠄⠄
         ⣿⣿⣿⣶⣦⣬⣭⣭⣭⣝⣭⣭⣭⣴⣷⣦⡀⠄⠄⠄⠄⠄⠄⠠⠤⠿⠦⠤⠄⠄
         -->
-    </div>
-    <div id="modalRuleta" class="modalRuleta">
-        <div class="modalRuleta-content">
-            <div class="boxRuleta">
-                <div id="mesa" class="scrollable">
-                    <div class="container">
-                        <img id="ruleta" src="media/casino.png" alt="Imagen del casino">
-                        <div id="ficha" style="bottom: 150px; left: 580px;"></div>
-                        <div id="fichasApuestas" style="height: 0px;">
-                            <div class="apuesta" id="apuestaNumero0" style="bottom: 346px; left: 593px;">0</div>
-                            <div class="apuesta" id="apuestaNumero1" style="bottom: 328px; left: 644px;">0</div>
-                            <div class="apuesta" id="apuestaNumero2" style="bottom: 447px; left: 670px;">0</div>
-                            <div class="apuesta" id="apuestaNumero3" style="bottom: 617px; left: 647px;">0</div>
-                            <div class="apuesta" id="apuestaNumero4" style="bottom: 488px; left: 727px;">0</div>
-                            <div class="apuesta" id="apuestaNumero5" style="bottom: 609px; left: 701px;">0</div>
-                            <div class="apuesta" id="apuestaNumero6" style="bottom: 680px; left: 720px;">0</div>
-                            <div class="apuesta" id="apuestaNumero7" style="bottom: 555px; left: 760px;">0</div>
-                            <div class="apuesta" id="apuestaNumero8" style="bottom: 674px; left: 774px;">0</div>
-                            <div class="apuesta" id="apuestaNumero9" style="bottom: 843px; left: 758px;">0</div>
-                            <div class="apuesta" id="apuestaNumero10" style="bottom: 670px; left: 814px;">0</div>
-                            <div class="apuesta" id="apuestaNumero11" style="bottom: 792px; left: 824px;">0</div>
-                            <div class="apuesta" id="apuestaNumero12" style="bottom: 910px; left: 817px;">0</div>
-                            <div class="apuesta" id="apuestaNumero13" style="bottom: 832px; left: 870px;">0</div>
-                            <div class="apuesta" id="apuestaNumero14" style="bottom: 950px; left: 880px;">0</div>
-                            <div class="apuesta" id="apuestaNumero15" style="bottom: 1025px; left: 865px;">0</div>
-                            <div class="apuesta" id="apuestaNumero16" style="bottom: 897px; left: 930px;">0</div>
-                            <div class="apuesta" id="apuestaNumero17" style="bottom: 1020px; left: 920px;">0</div>
-                            <div class="apuesta" id="apuestaNumero18" style="bottom: 1140px; left: 927px;">0</div>
-                            <div class="apuesta" id="apuestaNumero19" style="bottom: 1060px; left: 968px;">0</div>
-                            <div class="apuesta" id="apuestaNumero20" style="bottom: 1180px; left: 980px;">0</div>
-                            <div class="apuesta" id="apuestaNumero21" style="bottom: 1300px; left: 995px;">0</div>
-                            <div class="apuesta" id="apuestaNumero22" style="bottom: 1125px; left: 1024px;">0</div>
-                            <div class="apuesta" id="apuestaNumero23" style="bottom: 1245px; left: 1040px;">0</div>
-                            <div class="apuesta" id="apuestaNumero24" style="bottom: 1365px; left: 1030px;">0</div>
-                            <div class="apuesta" id="apuestaNumero25" style="bottom: 1288px; left: 1100px;">0</div>
-                            <div class="apuesta" id="apuestaNumero26" style="bottom: 1410px; left: 1090px;">0</div>
-                            <div class="apuesta" id="apuestaNumero27" style="bottom: 1530px; left: 1080px;">0</div>
-                            <div class="apuesta" id="apuestaNumero28" style="bottom: 1355px; left: 1134px;">0</div>
-                            <div class="apuesta" id="apuestaNumero29" style="bottom: 1475px; left: 1154px;">0</div>
-                            <div class="apuesta" id="apuestaNumero30" style="bottom: 1590px; left: 1138px;">0</div>
-                            <div class="apuesta" id="apuestaNumero31" style="bottom: 1516px; left: 1200px;">0</div>
-                            <div class="apuesta" id="apuestaNumero32" style="bottom: 1636px; left: 1185px;">0</div>
-                            <div class="apuesta" id="apuestaNumero33" style="bottom: 1755px; left: 1210px;">0</div>
-                            <div class="apuesta" id="apuestaNumero34" style="bottom: 1580px; left: 1260px;">0</div>
-                            <div class="apuesta" id="apuestaNumero35" style="bottom: 1700px; left: 1250px;">0</div>
-                            <div class="apuesta" id="apuestaNumero36" style="bottom: 1820px; left: 1260px;">0</div>
-                            <div class="apuesta" id="dosAUno1" style="bottom: 1730px; left: 1333px;">0</div>
-                            <div class="apuesta" id="dosAUno2" style="bottom: 1850px; left: 1333px;">0</div>
-                            <div class="apuesta" id="dosAUno3" style="bottom: 1970px; left: 1333px;">0</div>
-                            <div class="apuesta" id="doce1" style="bottom: 1745px; left: 826px;">0</div>
-                            <div class="apuesta" id="doce2" style="bottom: 1783px; left: 1045px;">0</div>
-                            <div class="apuesta" id="doce3" style="bottom: 1822px; left: 1260px;">0</div>
-                            <div class="apuesta" id="1a18" style="bottom: 1777px; left: 686px;">0</div>
-                            <div class="apuesta" id="pares" style="bottom: 1813px; left: 795px;">0</div>
-                            <div class="apuesta" id="colorRojo" style="bottom: 1851px; left: 903px;">0</div>
-                            <div class="apuesta" id="colorNegro" style="bottom: 1889px; left: 1010px;">0</div>
-                            <div class="apuesta" id="impares" style="bottom: 1925px; left: 1118px;">0</div>
-                            <div class="apuesta" id="19a36" style="bottom: 1963px; left: 1227px;">0</div>
-                        </div>
-                        <div id="tablaApuesta" style="height: 0px;">
-                            <button class="buttonApuestaNumero" id="botonApuesta1" style="bottom: 334px; left: 652px;" onclick="abrirInputApuesta(1)">1</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta2" style="bottom: 494px; left: 652px;" onclick="abrirInputApuesta(2)">2</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta3" style="bottom: 653px; left: 652px;" onclick="abrirInputApuesta(3)">3</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta4" style="bottom: 569px; left: 707px;" onclick="abrirInputApuesta(4)">4</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta5" style="bottom: 728px; left: 707px;" onclick="abrirInputApuesta(5)">5</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta6" style="bottom: 887px; left: 707px;" onclick="abrirInputApuesta(6)">6</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta7" style="bottom: 802px; left: 761px;" onclick="abrirInputApuesta(7)">7</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta8" style="bottom: 962px; left: 761px;" onclick="abrirInputApuesta(8)">8</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta9" style="bottom: 1121px; left: 761px;" onclick="abrirInputApuesta(9)">9</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta10" style="bottom: 1036px; left: 815px;" onclick="abrirInputApuesta(10)">10</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta11" style="bottom: 1196px; left: 815px;" onclick="abrirInputApuesta(11)">11</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta12" style="bottom: 1355px; left: 815px;" onclick="abrirInputApuesta(12)">12</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta13" style="bottom: 1270px; left: 868px;" onclick="abrirInputApuesta(13)">13</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta14" style="bottom: 1430px; left: 868px;" onclick="abrirInputApuesta(14)">14</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta15" style="bottom: 1589px; left: 868px;" onclick="abrirInputApuesta(15)">15</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta16" style="bottom: 1504px; left: 922px;" onclick="abrirInputApuesta(16)">16</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta17" style="bottom: 1664px; left: 922px;" onclick="abrirInputApuesta(17)">17</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta18" style="bottom: 1823px; left: 922px;" onclick="abrirInputApuesta(18)">18</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta19" style="bottom: 1738px; left: 976px;" onclick="abrirInputApuesta(19)">19</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta20" style="bottom: 1898px; left: 976px;" onclick="abrirInputApuesta(20)">20</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta21" style="bottom: 2057px; left: 976px;" onclick="abrirInputApuesta(21)">21</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta22" style="bottom: 1972px; left: 1030px;" onclick="abrirInputApuesta(22)">22</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta23" style="bottom: 2131px; left: 1030px;" onclick="abrirInputApuesta(23)">23</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta24" style="bottom: 2290px; left: 1030px;" onclick="abrirInputApuesta(24)">24</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta25" style="bottom: 2206px; left: 1083px;" onclick="abrirInputApuesta(25)">25</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta26" style="bottom: 2365px; left: 1083px;" onclick="abrirInputApuesta(26)">26</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta27" style="bottom: 2524px; left: 1083px;" onclick="abrirInputApuesta(27)">27</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta28" style="bottom: 2440px; left: 1137px;" onclick="abrirInputApuesta(28)">28</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta29" style="bottom: 2599px; left: 1137px;" onclick="abrirInputApuesta(29)">29</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta30" style="bottom: 2758px; left: 1137px;" onclick="abrirInputApuesta(30)">30</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta31" style="bottom: 2674px; left: 1191px;" onclick="abrirInputApuesta(31)">31</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta32" style="bottom: 2833px; left: 1191px;" onclick="abrirInputApuesta(32)">32</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta33" style="bottom: 2992px; left: 1191px;" onclick="abrirInputApuesta(33)">33</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta34" style="bottom: 2908px; left: 1245px;" onclick="abrirInputApuesta(34)">34</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta35" style="bottom: 3067px; left: 1245px;" onclick="abrirInputApuesta(35)">35</button>
-                            <button class="buttonApuestaNumero" id="botonApuesta36" style="bottom: 3226px; left: 1245px;" onclick="abrirInputApuesta(36)">36</button>
-                            <button class="buttonApuestaNumeroZero" id="botonApuesta0" style="bottom: 3305px; left: 576px;" onclick="abrirInputApuesta(0)">0</button>
-                            <button class="buttonApuestaNumero" id="botonDosAUno1" style="bottom: 3384px; left: 1300px;" onclick="abrirInputApuesta('Primer 2 a 1')">1° 2a1</button>
-                            <button class="buttonApuestaNumero" id="botonDosAUno2" style="bottom: 3543px; left: 1300px;" onclick="abrirInputApuesta('Segundo 2 a 1')">2° 2a1</button>
-                            <button class="buttonApuestaNumero" id="botonDosAUno3" style="bottom: 3703px; left: 1300px;" onclick="abrirInputApuesta('Tercer 2 a 1')">3° 2a1</button>
-                            <button class="buttonDoces" id="botonDoces1" style="bottom: 3534px; left: 650px;" onclick="abrirInputApuesta('Primer 12')">Primer 12</button>
-                            <button class="buttonDoces" id="botonDoces2" style="bottom: 3595px; left: 868px;" onclick="abrirInputApuesta('Segundo 12')">Segundo 12</button>
-                            <button class="buttonDoces" id="botonDoces3" style="bottom: 3656px; left: 1083px;" onclick="abrirInputApuesta('Tercer 12')">Tercer 12</button>
-                            <button class="buttonColorParMitad" id="boton1a18" style="bottom: 3651px; left: 650px;" onclick="abrirInputApuesta('1 a 18')">1 a 18</button>
-                            <button class="buttonColorParMitad" id="botonPares" style="bottom: 3714px; left: 760px;" onclick="abrirInputApuesta('Par')">Pares</button>
-                            <button class="buttonColorParMitad" id="botonRojo" style="bottom: 3778px; left: 868px;" onclick="abrirInputApuesta('Rojo')"></button>
-                            <button class="buttonColorParMitad" id="botonNegro" style="bottom: 3843px; left: 975px;" onclick="abrirInputApuesta('Negro')"></button>
-                            <button class="buttonColorParMitad" id="botonImpares" style="bottom: 3906px; left: 1083px;" onclick="abrirInputApuesta('Impar')">Impares</button>
-                            <button class="buttonColorParMitad" id="boton19a36" style="bottom: 3970px; left: 1192px;" onclick="abrirInputApuesta ('19 a 36')">19 a 36</button>
-                        </div>
-                        <div id="botones" style="height: 0px;">
-                            <button class="buttonApuestaStart" style="bottom: 232px; left: 227px;" onclick="girarRuleta()">GIRAR</button>
-                        </div>
-                    </div>
-                    <img class="buttonIcon" src="media/navBotonesRuleta.png" alt="Imagen Botones">
-                    <div class="buttonContainer" style="height: 0px;">
-                        <button class="buttonMenu" name="mostrarFichas" style="bottom: 124px; left: 96px;" onclick="abrirModalFichas()">Fichas</button>
-                        <button class="buttonMenu" style="bottom: 213px; left: 256px;" onclick="abrirModalApuesta()">Apuesta</button>
-                        <button class="buttonMenu" style="bottom: 303px; left: 416px;" onclick="abrirModalHistorial()">Historial</button>
-                        <button class="buttonMenu" style="bottom: 393px; left: 576px;" onclick="apuestaRandom()">Apuesta Random</button>
-                        <button class="buttonMenu" style="bottom: 483px; left: 736px;" onclick="aumentarFichas()">+5000</button>
-                        <button class="buttonMenu" style="bottom: 573px; left: 896px;" onclick="apuestaBorrar()">Borrar Apuesta</button>
-                        <button class="buttonMenu" style="bottom: 663px; left: 1056px;" onclick="">Reglas</button>
-                        <button class="buttonMenu" style="bottom: 753px; left: 1216px;" onclick="cerrarModalRuleta()">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <div id="modalFichas" class="modalFichas" onclick="cerrarModalFichas()">
         <div class="modalFichas-content">
@@ -206,22 +64,11 @@
             </div>
         </div>
     </div>
-    <div id="modalInputApuesta" class="modalInputApuesta">
-        <div class="modalInputApuesta-content">
-            <div class="modalInputApuesta-header">
-                <div class="modalInputApuesta-titulo" id="datoKeyApuesta">Apuesta</div>
-            </div>
-            <input id="inputApuesta" type="number" min="0" max="1000" placeholder="Tu apuesta" onkeypress="teclaEnter(event)">
-            <div class="modalInputApuesta-footer">
-                <button id="enviarInputApuesta" class="enviarInputApuesta" onclick="enviarInputApuesta()">Apostar</button>
-                <button id="cerrarInputApuesta" class="cerrarInputApuesta" onclick="cerrarInputApuesta()">Cerrar</button>
-            </div>
-        </div>
-    </div>
 </body>
+    <script src="js/funcionesGenerales.js"></script>
     <script src="js/variablesRuleta.js"></script>
     <script src="js/funcionesRuleta.js"></script>
-    <script src="js/index.js"></script>
+    <script src="js/modalRuleta.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>

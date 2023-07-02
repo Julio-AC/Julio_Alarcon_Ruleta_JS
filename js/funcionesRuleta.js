@@ -1,3 +1,4 @@
+/*JulioAlarcon*/
 class Apuesta {
     constructor() {
         this.numeroGanador = 0;
@@ -47,16 +48,12 @@ class Apuesta {
     }
 }
 
-function enviarInputApuesta() {
+function enviarInputApuesta(datoKey) {
     let inputApuesta = document.getElementById("inputApuesta");
     let mensajeError = document.querySelector(".mensajeError");
-    let datoKey = document.getElementById("datoKeyApuesta").innerText;
     let cantidad = parseInt(inputApuesta.value);
     let verificarMinimo = apuestaMinima;
-    if (!isNaN(datoKeyApuesta)) {
-        datoKey = parseInt(datoKeyApuesta);
-    }
-    const idDato = tipoApuesta.find(tipoApuesta => tipoApuesta.PK === datoKey);
+    const idDato = tipoApuesta.find(tipoApuesta => tipoApuesta.pk === datoKey);
     if (idDato || (!isNaN(datoKey) && datoKey >= 0 && datoKey <= 36)) {
         if (datoKey in apuesta) {
             verificarMinimo = 1;
@@ -100,7 +97,7 @@ function enviarInputApuesta() {
 
 function apuestaCantidad(datoKey, cantidad) {
     let apuestaDatos = "";
-    const idDato = tipoApuesta.find(tipoApuesta => tipoApuesta.PK === datoKey);
+    const idDato = tipoApuesta.find(tipoApuesta => tipoApuesta.pk === datoKey);
     if (idDato || (!isNaN(datoKey) && datoKey >= 0 && datoKey <= 36)) {
         fichasDisponibles -= cantidad;
         if (datoKey in apuesta) {
@@ -108,12 +105,7 @@ function apuestaCantidad(datoKey, cantidad) {
         } else {
             apuesta[datoKey] = cantidad;
         }
-        if (idDato) {
-            apuestaDatos = document.getElementById(idDato.idHTML);
-        } else {
-            idNumero = "apuestaNumero" + datoKey;
-            apuestaDatos = document.getElementById(idNumero);
-        }
+        apuestaDatos = document.getElementById(datoKey);
         apuestaDatos.innerText = apuesta[datoKey];
         apuestaActualizarVisibilidad()
         Swal.fire({
@@ -129,12 +121,12 @@ function apuestaCantidad(datoKey, cantidad) {
 function apuestaRandom() {
     let opcionApuesta = [];
     for (let i = 0; i < numerosRuleta.length; i++) {
-        numero = numerosRuleta[i].numero;
+        numero = numerosRuleta[i].pk;
         opcionApuesta.push(numero);
     }
     for (let j = 0; j < tipoApuesta.length; j++) {
-        PK = tipoApuesta[j].PK;
-        opcionApuesta.push(PK);
+        pk = tipoApuesta[j].pk;
+        opcionApuesta.push(pk);
     }
     largoOpcionApuesta = opcionApuesta.length;
     randomOpcionApuesta = Math.floor(Math.random() * largoOpcionApuesta);
@@ -144,15 +136,17 @@ function apuestaRandom() {
 function girarRuleta() {
     const storageKeys = Object.keys(localStorage);
     const numeroElegido = Math.floor(Math.random() * 37);
-    const datoGanador = numerosRuleta.find((numero) => numero.numero === numeroElegido);
+    const datoGanador = numerosRuleta.find((pk) => pk.pk === numeroElegido);
     const bottomRuleta = datoGanador.bottomRuleta, leftRuleta = datoGanador.leftRuleta;
     const historialKey = 'historial-' + storageKeys.filter(clave => textHistorial.test(clave)).length;
-    let mensaje = `El número ganador es ${datoGanador.numero} de color ${datoGanador.color}\n`;
+    let mensaje = `El número ganador es ${datoGanador.pk} de color ${datoGanador.color}\n`;
     let objApuesta = new Apuesta();
     let sumaFichas = 0, ganancias = 0, perdidas = 0;
+    let fichasAntes = fichasDisponibles;
     for (const apuestaItem in apuesta) {
-        const tipoApuestaEncontrada = tipoApuesta.find(tipoApuesta => tipoApuesta.PK === apuestaItem);
+        const tipoApuestaEncontrada = tipoApuesta.find(tipoApuesta => tipoApuesta.pk === apuestaItem);
         let isGanador = false, multiplicador = 0;
+        fichasAntes += apuesta[apuestaItem];
         if (tipoApuestaEncontrada) {
             mensajeApuesta = tipoApuestaEncontrada.mensaje;
             objApuesta[tipoApuestaEncontrada.funcionClass](apuestaItem, apuesta[apuestaItem]);
@@ -183,14 +177,22 @@ function girarRuleta() {
         }
         delete apuesta[apuestaItem];
     }
-    objApuesta.agregarFichaAntes(fichasDisponibles), objApuesta.agregarNumeroGanador(numeroElegido);
+    objApuesta.agregarFichaAntes(fichasAntes), objApuesta.agregarNumeroGanador(numeroElegido);
     objApuesta.agregarApuestaGanancia(ganancias), objApuesta.agregarApuestaPerdida(perdidas);
     fichasDisponibles += sumaFichas;
     objApuesta.agregarFichaActual(fichasDisponibles);
     localStorage.setItem(historialKey, JSON.stringify(objApuesta));
     moverFicha(bottomRuleta, leftRuleta);
     apuestaBorrar();
-    mensaje += `\n\nPerdidas Total: ${perdidas}\nGanancias Total: ${ganancias}\nFichas Totales: ${fichasDisponibles}`;
+    mensaje += `\nPerdidas Total: ${perdidas}\nGanancias Total: ${ganancias}\nFichas Totales: ${fichasDisponibles}`;
+    Swal.fire({
+        title: mensaje,
+        showDenyButton: true,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar',
+        denyButtonColor: '#ff0095',
+        denyButtonText: 'Cancelar',
+    })
 }
 
 function moverFicha(bottomRuleta, leftRuleta) {

@@ -1,0 +1,122 @@
+[
+    {
+        "pk": "Primer 2 a 1",
+        "nombre": "1° 2a1",
+        "funcionClass": "establecerDosAUno",
+        "mensaje": "el Primer 2 a 1",
+        "idTabla": "botonDosAUno1",
+        "styleTabla": "bottom: 3384px; left: 1300px;",
+        "styleFicha": "bottom: 1730px; left: 1333px;",
+        "classTabla": "buttonApuestaNumero"
+    },
+    {
+        "pk": "Segundo 2 a 1",
+        "nombre": "2° 2a1",
+        "funcionClass": "establecerDosAUno",
+        "mensaje": "el Segundo 2 a 1",
+        "idTabla": "botonDosAUno2",
+        "styleTabla": "bottom: 3543px; left: 1300px;",
+        "styleFicha": "bottom: 1850px; left: 1333px;",
+        "classTabla": "buttonApuestaNumero"
+    },
+    {
+        "pk": "Tercer 2 a 1",
+        "nombre": "3° 2a1",
+        "funcionClass": "establecerDosAUno",
+        "mensaje": "el Tercer 2 a 1",
+        "idTabla": "botonDosAUno3",
+        "styleTabla": "bottom: 3703px; left: 1300px;",
+        "styleFicha": "bottom: 1970px; left: 1333px;",
+        "classTabla": "buttonApuestaNumero"
+    },
+    {
+        "pk": "Primer 12",
+        "nombre": "Primer 12",
+        "funcionClass": "establecerDocena",
+        "mensaje": "el Primer 12",
+        "idTabla": "botonDoces1",
+        "styleTabla": "bottom: 3534px; left: 650px;",
+        "styleFicha": "bottom: 1745px; left: 826px;",
+        "classTabla": "buttonDoces"
+    },
+    {
+        "pk": "Segundo 12",
+        "nombre": "Segundo 12",
+        "funcionClass": "establecerDocena",
+        "mensaje": "el Segundo 12",
+        "idTabla": "botonDoces2",
+        "styleTabla": "bottom: 3595px; left: 868px;",
+        "styleFicha": "bottom: 1783px; left: 1045px;",
+        "classTabla": "buttonDoces"
+    },
+    {
+        "pk": "Tercer 12",
+        "nombre": "Tercer 12",
+        "funcionClass": "establecerDocena",
+        "mensaje": "el Tercer 12",
+        "idTabla": "botonDoces3",
+        "styleTabla": "bottom: 3656px; left: 1083px;",
+        "styleFicha": "bottom: 1822px; left: 1260px;",
+        "classTabla": "buttonDoces"
+    },
+    {
+        "pk": "1 a 18",
+        "nombre": "1 a 18",
+        "funcionClass": "establecerMitad",
+        "mensaje": "la mitad 1 a 18",
+        "idTabla": "boton1a18",
+        "styleTabla": "bottom: 3651px; left: 650px;",
+        "styleFicha": "bottom: 1777px; left: 686px;",
+        "classTabla": "buttonColorParMitad"
+    },
+    {
+        "pk": "Par",
+        "nombre": "Pares",
+        "funcionClass": "establecerParImpar",
+        "mensaje": "los números pares",
+        "idTabla": "botonPares",
+        "styleTabla": "bottom: 3714px; left: 760px;",
+        "styleFicha": "bottom: 1813px; left: 795px;",
+        "classTabla": "buttonColorParMitad"
+    },
+    {
+        "pk": "Rojo",
+        "nombre": "",
+        "funcionClass": "agregarColor",
+        "mensaje": "el color Rojo",
+        "idTabla": "botonRojo",
+        "styleTabla": "bottom: 3778px; left: 868px;",
+        "styleFicha": "bottom: 1851px; left: 903px;",
+        "classTabla": "buttonColorParMitad"
+    },
+    {
+        "pk": "Negro",
+        "nombre": "",
+        "funcionClass": "agregarColor",
+        "mensaje": "el color Negro",
+        "idTabla": "botonNegro",
+        "styleTabla": "bottom: 3843px; left: 975px;",
+        "styleFicha": "bottom: 1889px; left: 1010px;",
+        "classTabla": "buttonColorParMitad"
+    },
+    {
+        "pk": "Impar",
+        "nombre": "Impares",
+        "funcionClass": "establecerParImpar",
+        "mensaje": "los números impares",
+        "idTabla": "botonImpares",
+        "styleTabla": "bottom: 3906px; left: 1083px;",
+        "styleFicha": "bottom: 1925px; left: 1118px;",
+        "classTabla": "buttonColorParMitad"
+    },
+    {
+        "pk": "19 a 36",
+        "nombre": "19 a 36",
+        "funcionClass": "establecerMitad",
+        "mensaje": "la mitad 19 a 36",
+        "idTabla": "boton19a36",
+        "styleTabla": "bottom: 3970px; left: 1192px;",
+        "styleFicha": "bottom: 1963px; left: 1227px;",
+        "classTabla": "buttonColorParMitad"
+    }
+]
